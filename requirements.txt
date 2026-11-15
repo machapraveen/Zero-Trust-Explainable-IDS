@@ -1,0 +1,76 @@
+# ZT-XAIIDS Dependencies
+# =====================
+# Explainable Deep Learning Framework for Zero-Trust Intrusion Detection
+# Using Multi-Level Network Traffic Analytics
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Flask & Web Framework
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+Flask-Migrate==4.0.5
+Flask-CORS==4.0.0
+Flask-Limiter==3.5.0
+Flask-Caching==2.1.0
+Werkzeug==3.0.1
+Jinja2==3.1.2
+WTForms>=3.1.0
+
+# Database & Caching
+SQLAlchemy>=2.0.23,<2.1
+alembic>=1.13.0
+psycopg2-binary>=2.9.9
+redis>=5.0.1
+
+# Machine Learning & Statistical Ensemble
+numpy>=1.26.0,<2.0
+pandas>=2.1.0,<3.0
+scipy>=1.11.4,<2.0
+scikit-learn>=1.3.2,<2.0
+xgboost>=2.0.2,<3.0; sys_platform != 'linux'
+xgboost-cpu>=2.0.2,<3.0; sys_platform == 'linux'
+joblib>=1.3.2,<2.0
+
+# Deep Learning & Topology Analytics
+torch>=2.1.0,<3.0
+networkx>=3.2.0,<4.0
+
+# Explainable AI (SHAP Interpretability Layer)
+shap>=0.44.0
+
+# Visualization & PDF Reporting
+matplotlib>=3.8.2
+seaborn>=0.13.0
+reportlab>=4.0.7
+Pillow>=10.1.0
+
+# Network, Security & Async Telemetry
+scapy>=2.5.0
+psutil>=5.9.7
+requests>=2.31.0
+aiohttp>=3.9.1
+python-dotenv>=1.0.0
+bcrypt>=4.1.1
+PyJWT>=2.8.0
+PyYAML>=6.0.1
+
+# Logging & Monitoring
+loguru>=0.7.2
+prometheus-client>=0.19.0
+python-dateutil>=2.8.2
+pytz>=2023.3
+tqdm>=4.66.1
+click>=8.1.7
+colorama>=0.4.6
+
+# Production WSGI Servers
+gunicorn==21.2.0; sys_platform != 'win32'
+waitress>=3.0.0; sys_platform == 'win32'
+
+# Testing Suite
+pytest>=7.4.3
+pytest-cov>=4.1.0
+pytest-flask>=1.3.0
+pytest-asyncio>=0.23.2

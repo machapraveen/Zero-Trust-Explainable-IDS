@@ -1,0 +1,96 @@
+# ZT-XAIIDS Docker Compose Stack
+# Explainable Deep Learning Framework for Zero-Trust Intrusion Detection
+
+services:
+  ztxai-app:
+    image: ztxai-ids:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ztxai-app
+    restart: unless-stopped
+    ports:
+      - "5000:8000"
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY:-ztxai-zero-trust-secret-key-2026}
+      - DATABASE_URL=postgresql://ztxai:${DB_PASSWORD:-ztxai_password}@db:5432/ztxai_ids
+      - REDIS_URL=redis://redis:6379/0
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./models:/app/models
+      - ./data/processed:/app/data/processed
+      - ./data/logs:/app/logs
+      - ./instance:/app/instance
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ztxai-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  db:
+    image: postgres:15-alpine
+    container_name: ztxai-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=ztxai
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-ztxai_password}
+      - POSTGRES_DB=ztxai_ids
+    volumes:
+      - ztxai-postgres-data:/var/lib/postgresql/data
+      - ./deployment/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5433:5432"
+    networks:
+      - ztxai-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ztxai -d ztxai_ids"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ztxai-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - ztxai-redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - ztxai-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: ztxai-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deployment/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deployment/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      ztxai-app:
+        condition: service_healthy
+    networks:
+      - ztxai-network
+
+networks:
+  ztxai-network:
+    driver: bridge
+
+volumes:
+  ztxai-postgres-data:
+    driver: local
+  ztxai-redis-data:
+    driver: local

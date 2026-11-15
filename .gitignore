@@ -1,0 +1,44 @@
+# ZT-XAIIDS Git Ignore
+# Explainable Deep Learning Framework for Zero-Trust Intrusion Detection
+
+# Python Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtual Environments & Local Secrets
+.env
+.env.local
+.venv/
+venv/
+env/
+
+# Runtime Databases, Sessions & Logs
+instance/
+flask_session/
+*.db
+*.sqlite*
+*.log
+logs/
+data/logs/*
+!data/logs/.gitkeep
+
+# Local TLS Private Keys / Self-Signed Certs
+deployment/ssl/*.pem
+deployment/ssl/*.key
+deployment/ssl/*.crt
+
+# Large Raw Datasets (Pre-trained 10-model weights in models/ are tracked)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.csv
+
+# IDE & OS Files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

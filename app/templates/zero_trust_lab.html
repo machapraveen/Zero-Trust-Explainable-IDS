@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}Zero-Trust XAI Lab{% endblock %}
+
+{% block content %}
+<div class="zero-trust-lab-page">
+    <!-- Header -->
+    <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-info text-dark fw-bold">5-STAGE ARCHITECTURE</span>
+                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>10 Models + TreeSHAP Ready</span>
+            </div>
+            <h1 class="page-title mb-1">
+                <i class="bi bi-shield-lock-fill text-info me-2"></i>Explainable Deep Learning Framework for Zero-Trust Intrusion Detection
+            </h1>
+            <p class="text-muted mb-0">
+                Multi-Level Network Traffic Analytics (L1 Packet &rarr; L2 Flow &rarr; L3 Session &amp; Edge/IoT) &bull; 10-Model Deep Ensemble &bull; Real-Time SHAP Interpretability &bull; Zero-Trust Policy Engine
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('ai_models.ai_models_page') }}" class="btn btn-outline-info">
+                <i class="bi bi-robot me-1"></i>10-Model Catalog
+            </a>
+            <a href="{{ url_for('alerts.alert_list') }}" class="btn btn-outline-light">
+                <i class="bi bi-bell me-1"></i>SOC Alerts
+            </a>
+        </div>
+    </div>
+
+    <!-- 5-Stage Pipeline Ribbon -->
+    <div class="glass-card mb-4 p-3">
+        <div class="pipeline-ribbon">
+            <div class="stage-step active" id="stage-pill-1">
+                <div class="stage-num">Stage 1</div>
+                <div class="stage-title"><i class="bi bi-hdd-network me-1"></i>Multi-Level Input</div>
+                <div class="stage-sub">L1 Packet &bull; L2 Flow &bull; L3 Zero-Trust/IoT</div>
+            </div>
+            <div class="stage-arrow"><i class="bi bi-chevron-right"></i></div>
+            <div class="stage-step active" id="stage-pill-2">
+                <div class="stage-num">Stage 2</div>
+                <div class="stage-title"><i class="bi bi-sliders me-1"></i>Preprocessing</div>
+                <div class="stage-sub">24-Feature Extraction &amp; Scaling</div>
+            </div>
+            <div class="stage-arrow"><i class="bi bi-chevron-right"></i></div>
+            <div class="stage-step active" id="stage-pill-3">
+                <div class="stage-num">Stage 3</div>
+                <div class="stage-title"><i class="bi bi-cpu-fill me-1"></i>10-Model Classification</div>
+                <div class="stage-sub">6 PyTorch DL + 4 Ensemble ML</div>
+            </div>
+            <div class="stage-arrow"><i class="bi bi-chevron-right"></i></div>
+            <div class="stage-step active" id="stage-pill-4">
+                <div class="stage-num">Stage 4</div>
+                <div class="stage-title"><i class="bi bi-lightbulb-fill me-1"></i>Explainability (SHAP)</div>
+                <div class="stage-sub">Feature &amp; Layer Attribution</div>
+            </div>
+            <div class="stage-arrow"><i class="bi bi-chevron-right"></i></div>
+            <div class="stage-step active" id="stage-pill-5">
+                <div class="stage-num">Stage 5</div>
+                <div class="stage-title"><i class="bi bi-shield-shaded me-1"></i>Zero-Trust Engine</div>
+                <div class="stage-sub">Trust Score &amp; Micro-Segmentation</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scenario Presets + Telemetry Controls -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-5">
+            <div class="glass-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Live Traffic Scenarios</h3>
+                    <span class="badge bg-secondary">24 Multi-Level Features</span>
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted mb-2">Click a scenario preset or customize network telemetry below:</p>
+                    <div class="d-grid gap-2 mb-3" style="grid-template-columns: repeat(2, 1fr);">
+                        <button type="button" class="btn btn-sm btn-outline-success text-start" onclick="loadScenario('normal')">
+                            <i class="bi bi-check-circle me-1"></i>Normal Enterprise HTTPS
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger text-start" onclick="loadScenario('ddos')">
+                            <i class="bi bi-tsunami me-1"></i>Volumetric DDoS Flood
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning text-start" onclick="loadScenario('sqli')">
+                            <i class="bi bi-database-exclamation me-1"></i>SQL Injection Exploit
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info text-start" onclick="loadScenario('lateral')">
+                            <i class="bi bi-arrows-move me-1"></i>East-West Lateral Move
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger text-start" onclick="loadScenario('exfil')">
+                            <i class="bi bi-cloud-upload me-1"></i>Encrypted Exfiltration
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary text-start" onclick="loadScenario('iot_zeroday')">
+                            <i class="bi bi-router me-1"></i>Zero-Day / Edge IoT Bot
+                        </button>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Source IP</label>
+                            <input type="text" id="f_src_ip" class="form-control form-control-sm" value="185.220.101.42">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Destination IP</label>
+                            <input type="text" id="f_dst_ip" class="form-control form-control-sm" value="10.0.0.15">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small mb-1">Dest Port</label>
+                            <input type="number" id="f_dst_port" class="form-control form-control-sm" value="443">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small mb-1">Protocol</label>
+                            <select id="f_protocol" class="form-select form-select-sm">
+                                <option value="TCP">TCP</option>
+                                <option value="UDP">UDP</option>
+                                <option value="HTTPS">HTTPS</option>
+                                <option value="HTTP">HTTP</option>
+                                <option value="SSH">SSH</option>
+                                <option value="MQTT">MQTT (IoT)</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small mb-1">Duration (s)</label>
+                            <input type="number" step="0.01" id="f_duration" class="form-control form-control-sm" value="0.35">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Bytes Sent (L2)</label>
+                            <input type="number" id="f_bytes_sent" class="form-control form-control-sm" value="680000">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Bytes Recv (L2)</label>
+                            <input type="number" id="f_bytes_recv" class="form-control form-control-sm" value="1200">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small mb-1">SYN Ratio (L1)</label>
+                            <input type="number" step="0.01" min="0" max="1" id="f_syn" class="form-control form-control-sm" value="0.94">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small mb-1">Entropy (L1)</label>
+                            <input type="number" step="0.1" min="1" max="8" id="f_entropy" class="form-control form-control-sm" value="3.2">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small mb-1">Lateral Risk (L3)</label>
+                            <input type="number" step="0.05" min="0" max="1" id="f_lateral" class="form-control form-control-sm" value="0.10">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Device Posture Risk (L3)</label>
+                            <input type="number" step="0.05" min="0" max="1" id="f_posture" class="form-control form-control-sm" value="0.72">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Edge/IoT Drift (L3)</label>
+                            <input type="number" step="0.05" min="0" max="1" id="f_iot" class="form-control form-control-sm" value="0.15">
+                        </div>
+                    </div>
+
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="record_alert_chk" checked>
+                        <label class="form-check-label small" for="record_alert_chk">
+                            Log detected threats directly to SOC Alerts Database
+                        </label>
+                    </div>
+
+                    <button type="button" id="analyze-btn" class="btn btn-info text-dark fw-bold w-100 mt-3" onclick="runZeroTrustAnalysis()">
+                        <i class="bi bi-play-circle-fill me-1"></i>Execute 5-Stage Deep Learning &amp; Zero-Trust Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 5: Zero-Trust Decision + Executive Verdict -->
+        <div class="col-lg-7">
+            <div class="glass-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="bi bi-shield-shaded text-info me-2"></i>Stage 5: Zero-Trust Decision Engine</h3>
+                    <span class="badge bg-dark border border-secondary" id="latency-badge">Ready</span>
+                </div>
+                <div class="card-body" id="zt-decision-panel">
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-shield-lock display-4 text-info"></i>
+                        <p class="mt-3 mb-0">Running initial Zero-Trust verification...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stage 4 (SHAP Interpretability) & Stage 3 (10-Model Votes) -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="glass-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Stage 4: SHAP Interpretability Layer</h3>
+                    <span class="badge bg-info text-dark">TreeSHAP Exact Attribution</span>
+                </div>
+                <div class="card-body" id="shap-panel">
+                    <div class="text-muted text-center py-4">Awaiting flow telemetry...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="glass-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="bi bi-cpu-fill text-primary me-2"></i>Stage 3: 10-Model Deep &amp; ML Ensemble Votes</h3>
+                    <span class="badge bg-primary">6 PyTorch DL + 4 ML</span>
+                </div>
+                <div class="card-body" id="ensemble-panel">
+                    <div class="text-muted text-center py-4">Awaiting flow telemetry...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stage 1 & 2: Extracted 24 Multi-Level Features -->
+    <div class="glass-card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-layers-fill text-success me-2"></i>Stages 1 &amp; 2: Extracted Multi-Level Network Features (24 Dimensions)</h3>
+            <span class="badge bg-success">Leak-Free Median Imputer + StandardScaler</span>
+        </div>
+        <div class="card-body" id="multilevel-panel">
+            <div class="text-muted text-center py-3">Select a scenario above to inspect L1 Packet, L2 Flow, and L3 Session/Zero-Trust telemetry.</div>
+        </div>
+    </div>
+</div>
+
+<style>
+.pipeline-ribbon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    overflow-x: auto;
+}
+.stage-step {
+    flex: 1;
+    min-width: 165px;
+    padding: 0.75rem 0.9rem;
+    border-radius: 10px;
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.stage-num {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #38bdf8;
+    font-weight: 700;
+}
+.stage-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #f8fafc;
+}
+.stage-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+.stage-arrow {
+    color: #38bdf8;
+    font-size: 1.1rem;
+}
+.trust-meter {
+    height: 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.trust-meter-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+.shap-row {
+    display: grid;
+    grid-template-columns: 185px 1fr 78px;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.55rem;
+    font-size: 0.82rem;
+}
+.vote-row {
+    display: grid;
+    grid-template-columns: 215px 1fr 110px;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    margin-bottom: 0.45rem;
+    font-size: 0.82rem;
+}
+.bar-track {
+    height: 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 5px;
+    overflow: hidden;
+}
+.bar-fill-threat {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+}
+.bar-fill-benign {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+}
+</style>
+
+<script>
+const SCENARIOS = {
+    normal: {
+        src_ip: '192.168.1.25', dst_ip: '10.0.0.10', dst_port: 443, protocol: 'HTTPS',
+        duration: 1.85, bytes_sent: 4200, bytes_recv: 18600, packets_sent: 14, packets_recv: 22,
+        syn_flag_ratio: 0.08, ack_flag_ratio: 0.86, rst_flag_ratio: 0.01, psh_flag_ratio: 0.28,
+        payload_entropy: 5.9, failed_auth_rate: 0.01, lateral_movement_score: 0.04,
+        device_posture_risk: 0.08, identity_privilege_risk: 0.06, iot_edge_telemetry_dev: 0.05
+    },
+    ddos: {
+        src_ip: '185.220.101.42', dst_ip: '10.0.0.15', dst_port: 80, protocol: 'TCP',
+        duration: 0.25, bytes_sent: 820000, bytes_recv: 640, packets_sent: 9500, packets_recv: 12,
+        syn_flag_ratio: 0.95, ack_flag_ratio: 0.05, rst_flag_ratio: 0.08, psh_flag_ratio: 0.05,
+        payload_entropy: 2.6, session_burst_score: 0.97, lateral_movement_score: 0.08,
+        device_posture_risk: 0.78, identity_privilege_risk: 0.35, iot_edge_telemetry_dev: 0.20
+    },
+    sqli: {
+        src_ip: '45.33.32.156', dst_ip: '10.0.0.25', dst_port: 3306, protocol: 'HTTP',
+        duration: 1.10, bytes_sent: 18400, bytes_recv: 94000, packets_sent: 38, packets_recv: 65,
+        syn_flag_ratio: 0.14, ack_flag_ratio: 0.76, psh_flag_ratio: 0.78,
+        payload_entropy: 6.8, failed_auth_rate: 0.55, lateral_movement_score: 0.32,
+        device_posture_risk: 0.68, identity_privilege_risk: 0.88, iot_edge_telemetry_dev: 0.10
+    },
+    lateral: {
+        src_ip: '192.168.1.105', dst_ip: '192.168.1.10', dst_port: 445, protocol: 'TCP',
+        duration: 2.40, bytes_sent: 64000, bytes_recv: 28000, packets_sent: 120, packets_recv: 85,
+        syn_flag_ratio: 0.28, ack_flag_ratio: 0.70, psh_flag_ratio: 0.66,
+        payload_entropy: 6.4, failed_auth_rate: 0.62, lateral_movement_score: 0.94,
+        device_posture_risk: 0.74, identity_privilege_risk: 0.91, iot_edge_telemetry_dev: 0.12
+    },
+    exfil: {
+        src_ip: '10.0.0.50', dst_ip: '91.219.236.222', dst_port: 8443, protocol: 'HTTPS',
+        duration: 4.20, bytes_sent: 4850000, bytes_recv: 14000, packets_sent: 3600, packets_recv: 190,
+        syn_flag_ratio: 0.09, ack_flag_ratio: 0.85, psh_flag_ratio: 0.74,
+        payload_entropy: 7.85, outbound_asymmetry: 0.98, lateral_movement_score: 0.58,
+        device_posture_risk: 0.80, identity_privilege_risk: 0.86, iot_edge_telemetry_dev: 0.18
+    },
+    iot_zeroday: {
+        src_ip: '172.16.0.88', dst_ip: '198.96.155.3', dst_port: 4444, protocol: 'MQTT',
+        duration: 0.65, bytes_sent: 145000, bytes_recv: 4800, packets_sent: 980, packets_recv: 45,
+        syn_flag_ratio: 0.62, ack_flag_ratio: 0.35, rst_flag_ratio: 0.28, psh_flag_ratio: 0.72,
+        payload_entropy: 7.72, session_burst_score: 0.89, lateral_movement_score: 0.76,
+        device_posture_risk: 0.92, identity_privilege_risk: 0.79, iot_edge_telemetry_dev: 0.96
+    }
+};
+
+let activePresetExtra = { ...SCENARIOS.ddos };
+
+function loadScenario(key) {
+    const s = SCENARIOS[key];
+    if (!s) return;
+    activePresetExtra = { ...s };
+    document.getElementById('f_src_ip').value = s.src_ip;
+    document.getElementById('f_dst_ip').value = s.dst_ip;
+    document.getElementById('f_dst_port').value = s.dst_port;
+    document.getElementById('f_protocol').value = s.protocol;
+    document.getElementById('f_duration').value = s.duration;
+    document.getElementById('f_bytes_sent').value = s.bytes_sent;
+    document.getElementById('f_bytes_recv').value = s.bytes_recv;
+    document.getElementById('f_syn').value = s.syn_flag_ratio;
+    document.getElementById('f_entropy').value = s.payload_entropy;
+    document.getElementById('f_lateral').value = s.lateral_movement_score;
+    document.getElementById('f_posture').value = s.device_posture_risk;
+    document.getElementById('f_iot').value = s.iot_edge_telemetry_dev;
+    runZeroTrustAnalysis();
+}
+
+async function runZeroTrustAnalysis() {
+    const btn = document.getElementById('analyze-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing Across 10 Models + SHAP...';
+
+    const flow = {
+        ...activePresetExtra,
+        src_ip: document.getElementById('f_src_ip').value.trim(),
+        dst_ip: document.getElementById('f_dst_ip').value.trim(),
+        dst_port: parseInt(document.getElementById('f_dst_port').value || '443', 10),
+        protocol: document.getElementById('f_protocol').value,
+        duration: parseFloat(document.getElementById('f_duration').value || '1.0'),
+        bytes_sent: parseFloat(document.getElementById('f_bytes_sent').value || '0'),
+        bytes_recv: parseFloat(document.getElementById('f_bytes_recv').value || '0'),
+        syn_flag_ratio: parseFloat(document.getElementById('f_syn').value || '0.1'),
+        payload_entropy: parseFloat(document.getElementById('f_entropy').value || '5.0'),
+        lateral_movement_score: parseFloat(document.getElementById('f_lateral').value || '0.05'),
+        device_posture_risk: parseFloat(document.getElementById('f_posture').value || '0.1'),
+        iot_edge_telemetry_dev: parseFloat(document.getElementById('f_iot').value || '0.05')
+    };
+
+    try {
+        const res = await fetch('/api/v1/zero-trust/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                flow: flow,
+                record_alert: document.getElementById('record_alert_chk').checked
+            })
+        });
+        const payload = await res.json();
+        if (payload.success && payload.analysis) {
+            renderAnalysis(payload.analysis);
+        }
+    } catch (err) {
+        console.error('Zero-Trust analysis failed:', err);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-play-circle-fill me-1"></i>Execute 5-Stage Deep Learning &amp; Zero-Trust Analysis';
+    }
+}
+
+function renderAnalysis(a) {
+    document.getElementById('latency-badge').textContent = `${a.latency_ms} ms inference`;
+    const zt = a.zero_trust_decision || {};
+    const isThreat = a.is_threat;
+    const trustColor = zt.entity_trust_score >= 70 ? '#10b981' : (zt.entity_trust_score >= 40 ? '#f59e0b' : '#ef4444');
+    const badgeClass = isThreat ? 'bg-danger' : 'bg-success';
+
+    const alertLinkHtml = a.alert_id
+        ? `<a href="/alerts/${a.alert_id}" class="btn btn-sm btn-outline-warning ms-auto"><i class="bi bi-box-arrow-up-right me-1"></i>Inspect Alert #${a.alert_id}</a>`
+        : '';
+
+    document.getElementById('zt-decision-panel').innerHTML = `
+        <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+            <span class="badge ${badgeClass} fs-6 px-3 py-2">
+                ${isThreat ? 'THREAT DETECTED: ' + a.attack_type.toUpperCase() : 'VERIFIED BENIGN TRAFFIC'}
+            </span>
+            <span class="badge bg-dark border border-info text-info px-3 py-2">
+                Policy: ${zt.policy_action}
+            </span>
+            <span class="badge bg-secondary px-2 py-2">
+                Confidence: ${(a.confidence * 100).toFixed(1)}%
+            </span>
+            ${alertLinkHtml}
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="p-3 rounded" style="background: rgba(255,255,255,0.03);">
+                    <div class="small text-muted">Zero-Trust Entity Score</div>
+                    <div class="fs-2 fw-bold" style="color: ${trustColor};">${zt.entity_trust_score}<span class="fs-6 text-muted">/100</span></div>
+                    <div class="trust-meter mt-2">
+                        <div class="trust-meter-fill" style="width: ${zt.entity_trust_score}%; background: ${trustColor};"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 rounded" style="background: rgba(255,255,255,0.03);">
+                    <div class="small text-muted">Ensemble Threat Probability</div>
+                    <div class="fs-2 fw-bold ${isThreat ? 'text-danger' : 'text-success'}">${(a.threat_probability * 100).toFixed(1)}%</div>
+                    <div class="small text-muted mt-1">Severity: <strong class="text-uppercase">${a.severity}</strong></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 rounded" style="background: rgba(255,255,255,0.03);">
+                    <div class="small text-muted">MITRE ATT&amp;CK Mapping</div>
+                    <div class="fs-4 fw-bold text-info">${zt.mitre_attack_id || 'N/A'}</div>
+                    <div class="small text-muted mt-1">${zt.mitre_tactic || 'Continuous Telemetry'}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 rounded mb-3" style="background: rgba(239,68,68,0.08); border-left: 4px solid ${trustColor};">
+            <div class="small text-uppercase text-muted fw-bold mb-1">Automated Zero-Trust Enforcement Action (${zt.principle})</div>
+            <code class="text-light">${zt.enforcement_rule}</code>
+            ${zt.edge_iot_adaptive_mode ? '<div class="mt-2"><span class="badge bg-warning text-dark"><i class="bi bi-router me-1"></i>Edge / IoT Adaptive Telemetry Policy Active</span></div>' : ''}
+        </div>
+
+        <div class="p-3 rounded" style="background: rgba(59,130,246,0.08); border-left: 4px solid #3b82f6;">
+            <div class="small text-uppercase text-info fw-bold mb-1"><i class="bi bi-chat-square-quote me-1"></i>Explainable SOC Analyst Summary</div>
+            <div class="small text-light">${a.description}</div>
+        </div>
+    `;
+
+    // Render Stage 4 SHAP
+    const shap = a.shap_explanation || {};
+    const mlvl = shap.multilevel_attribution || {};
+    const topEntries = Object.entries(shap.top_features || {});
+    let shapRows = topEntries.map(([feat, val]) => {
+        const pct = Math.min(100, Math.max(5, Math.abs(val) * 320));
+        const isPos = val > 0;
+        return `
+            <div class="shap-row">
+                <code class="text-truncate" title="${feat}">${feat}</code>
+                <div class="bar-track">
+                    <div class="${isPos ? 'bar-fill-threat' : 'bar-fill-benign'}" style="width: ${pct}%"></div>
+                </div>
+                <span class="text-end fw-semibold ${isPos ? 'text-danger' : 'text-success'}">
+                    ${isPos ? '+' : ''}${(val * 100).toFixed(1)}%
+                </span>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('shap-panel').innerHTML = `
+        <div class="mb-3">
+            <div class="small text-muted mb-2">Multi-Level Traffic Attribution Share:</div>
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="badge bg-secondary p-2">L1 Packet: ${mlvl.Packet_Level_L1_pct || 0}%</span>
+                <span class="badge bg-primary p-2">L2 Flow: ${mlvl.Flow_Level_L2_pct || 0}%</span>
+                <span class="badge bg-info text-dark p-2">L3 Session/Zero-Trust: ${mlvl.Session_ZeroTrust_L3_pct || 0}%</span>
+            </div>
+        </div>
+        <div class="small text-muted mb-2">Top Feature SHAP Attributions (<span class="text-danger">+ Threat Risk</span> / <span class="text-success">- Benign</span>):</div>
+        ${shapRows}
+    `;
+
+    // Render Stage 3 10-Model Ensemble Votes
+    const votesHtml = (a.ensemble_votes || []).map(v => {
+        const pct = (v.threat_probability * 100).toFixed(1);
+        const isT = v.verdict === 'THREAT';
+        return `
+            <div class="vote-row">
+                <div class="text-truncate" title="${v.family}">
+                    <span>${v.icon}</span> <strong>${v.name}</strong>
+                </div>
+                <div class="bar-track">
+                    <div class="${isT ? 'bar-fill-threat' : 'bar-fill-benign'}" style="width: ${Math.max(4, pct)}%"></div>
+                </div>
+                <div class="text-end">
+                    <span class="badge ${isT ? 'bg-danger' : 'bg-success'}">${pct}% ${v.predicted_class}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+    document.getElementById('ensemble-panel').innerHTML = votesHtml;
+
+    // Render Stages 1 & 2 Multi-Level Features
+    const mf = a.multilevel_features || {};
+    const renderFeatureGroup = (title, badgeCls, obj) => {
+        const items = Object.entries(obj || {}).map(([k, v]) =>
+            `<div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-25 small">
+                <span class="text-muted">${k}</span><code>${v}</code>
+            </div>`
+        ).join('');
+        return `
+            <div class="col-md-4">
+                <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.02);">
+                    <div class="fw-semibold mb-2"><span class="badge ${badgeCls} me-1">${title}</span></div>
+                    ${items}
+                </div>
+            </div>
+        `;
+    };
+    document.getElementById('multilevel-panel').innerHTML = `
+        <div class="row g-3">
+            ${renderFeatureGroup('L1: Packet-Level (8)', 'bg-secondary', mf.L1_Packet)}
+            ${renderFeatureGroup('L2: Flow-Level (8)', 'bg-primary', mf.L2_Flow)}
+            ${renderFeatureGroup('L3: Session & Zero-Trust / IoT (8)', 'bg-info text-dark', mf.L3_Session_ZeroTrust)}
+        </div>
+    `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Run initial non-persisted demo analysis on page load so all 5 stages are immediately populated
+    const chk = document.getElementById('record_alert_chk');
+    const prev = chk.checked;
+    chk.checked = false;
+    runZeroTrustAnalysis().then(() => { chk.checked = prev; });
+});
+</script>
+{% endblock %}
+

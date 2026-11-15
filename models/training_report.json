@@ -1,0 +1,70 @@
+{
+  "framework": "Explainable Deep Learning Framework for Zero-Trust Intrusion Detection",
+  "trained_at": "2026-11-15T17:51:06.431884",
+  "training_seconds": 13.49,
+  "dataset_samples": 4500,
+  "n_features": 24,
+  "n_models": 10,
+  "shap_initialized": true,
+  "ensemble": {
+    "binary_accuracy": 1.0,
+    "multiclass_accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "roc_auc": 1.0,
+    "false_positive_rate": 0.0
+  },
+  "per_model": {
+    "deep_cnn": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "bilstm_attn": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "transformer_net": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "gnn_topology": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "deep_resmlp": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "deep_autoencoder": {
+      "accuracy": 0.9748,
+      "f1": 0.9787,
+      "roc_auc": 1.0
+    },
+    "xgboost": {
+      "accuracy": 0.9985,
+      "f1": 0.9987,
+      "roc_auc": 1.0
+    },
+    "random_forest": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "extra_trees": {
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "isolation_forest": {
+      "accuracy": 0.9896,
+      "f1": 0.991,
+      "roc_auc": 0.9997
+    }
+  }
+}

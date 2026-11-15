@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZT-XAIIDS | Explainable Deep Learning Framework for Zero-Trust Intrusion Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0f1c;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: rgba(10, 15, 28, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 1rem 2rem;
+        }
+        .hero-box {
+            padding: 4.5rem 1.5rem 3rem;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-glass {
+            background: rgba(18, 25, 43, 0.85);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" href="/">
+            <i class="bi bi-shield-lock-fill text-info fs-4"></i>
+            <span>ZT-XAIIDS</span>
+        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-info text-dark fw-semibold">SOC Login</a>
+        </div>
+    </nav>
+
+    <section class="hero-box">
+        <div class="mb-3 d-flex flex-wrap gap-2">
+            <span class="badge bg-info text-dark fw-semibold px-3 py-2">Aditya College of Engineering and Technology</span>
+            <span class="badge bg-primary px-3 py-2">Department of CSE - AIML</span>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">
+            Explainable Deep Learning Framework for <span class="gradient-text">Zero-Trust Intrusion Detection</span> Using Multi-Level Network Traffic Analytics
+        </h1>
+        <p class="lead text-secondary mb-4" style="max-width: 880px;">
+            Mitigating modern multi-stage cyber threats by uniting 24-feature multi-level network analytics, a 10-model Deep Learning &amp; ML ensemble, real-time TreeSHAP interpretability, and continuous Zero-Trust policy enforcement.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mb-5">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-info btn-lg text-dark fw-bold px-4">
+                <i class="bi bi-speedometer2 me-2"></i>Launch SOC Dashboard &amp; Zero-Trust Lab
+            </a>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card-glass">
+                    <i class="bi bi-layers-fill text-info fs-2"></i>
+                    <h5 class="fw-bold mt-3">Multi-Level Traffic Analytics</h5>
+                    <p class="text-secondary small mb-0">Simultaneous inspection of L1 Packet headers/entropy, L2 Flow dynamics, and L3 Session, Identity &amp; Edge/IoT telemetry.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass">
+                    <i class="bi bi-cpu-fill text-primary fs-2"></i>
+                    <h5 class="fw-bold mt-3">10-Model Deep &amp; ML Ensemble</h5>
+                    <p class="text-secondary small mb-0">6 PyTorch architectures (1D-CNN, Bi-LSTM, Transformer, GNN, ResMLP, Autoencoder) fused with XGBoost, Random Forest, Extra-Trees &amp; Isolation Forest.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-glass">
+                    <i class="bi bi-lightbulb-fill text-warning fs-2"></i>
+                    <h5 class="fw-bold mt-3">TreeSHAP + Zero-Trust Engine</h5>
+                    <p class="text-secondary small mb-0">Transparent feature-level explanations paired with continuous Entity Trust Scoring (0–100) and automated micro-segmentation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-glass">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5 border-end border-secondary border-opacity-25">
+                    <div class="small text-info text-uppercase fw-bold">Project Supervision / Guide</div>
+                    <h4 class="fw-bold mt-1 mb-1">Ms. S. Saranya, M.Tech</h4>
+                    <div class="text-secondary small">Assistant Professor, Department of CSE - AIML</div>
+                    <div class="text-secondary small">Aditya College of Engineering and Technology</div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="small text-info text-uppercase fw-bold mb-2">Project Team (CSE - AIML)</div>
+                    <div class="row g-2 small">
+                        <div class="col-sm-6"><strong>P. Dwaraka Ushashwini</strong> &mdash; <code class="text-warning">23MH1A42J4</code></div>
+                        <div class="col-sm-6"><strong>G. Ramya</strong> &mdash; <code class="text-warning">23MH1A42E4</code></div>
+                        <div class="col-sm-6"><strong>K. Kavya</strong> &mdash; <code class="text-warning">23MH1A42F3</code></div>
+                        <div class="col-sm-6"><strong>M. T. Ravi Kishore</strong> &mdash; <code class="text-warning">23MH1A42G6</code></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-4 text-secondary small border-top border-secondary border-opacity-25 mt-4">
+        Aditya College of Engineering and Technology &bull; Department of CSE - AIML &bull; Zero-Trust Explainable Intrusion Detection Framework
+    </footer>
+</body>
+</html>

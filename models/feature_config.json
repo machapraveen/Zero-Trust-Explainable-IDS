@@ -1,0 +1,30 @@
+{
+  "feature_names": [
+    "pkt_size_mean",
+    "pkt_size_std",
+    "syn_flag_ratio",
+    "ack_flag_ratio",
+    "rst_flag_ratio",
+    "psh_flag_ratio",
+    "header_overhead_ratio",
+    "payload_entropy",
+    "flow_duration",
+    "bytes_sent",
+    "bytes_recv",
+    "packets_sent",
+    "packets_recv",
+    "flow_bytes_per_sec",
+    "flow_packets_per_sec",
+    "inter_arrival_ms",
+    "port_scan_dispersion",
+    "failed_auth_rate",
+    "session_burst_score",
+    "outbound_asymmetry",
+    "lateral_movement_score",
+    "device_posture_risk",
+    "identity_privilege_risk",
+    "iot_edge_telemetry_dev"
+  ],
+  "n_features": 24,
+  "saved_at": "2026-11-15T17:51:06.431884"
+}

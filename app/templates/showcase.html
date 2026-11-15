@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Project Overview & Team{% endblock %}
+
+{% block content %}
+<div class="project-showcase-page">
+    <!-- Hero Banner -->
+    <div class="glass-card p-4 p-lg-5 mb-4" style="background: linear-gradient(135deg, rgba(14,165,233,0.14), rgba(99,102,241,0.12)); border: 1px solid rgba(56,189,248,0.35);">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="badge bg-info text-dark fw-bold px-3 py-2">ADITYA COLLEGE OF ENGINEERING AND TECHNOLOGY</span>
+            <span class="badge bg-primary px-3 py-2">DEPARTMENT OF CSE - AIML</span>
+        </div>
+        <h1 class="fw-bold mb-3" style="font-size: 2rem; line-height: 1.25;">
+            Explainable Deep Learning Framework for Zero-Trust Intrusion Detection Using Multi-Level Network Traffic Analytics
+        </h1>
+        <p class="text-light opacity-75 mb-4" style="max-width: 920px; font-size: 1.05rem;">
+            A unified 5-stage cybersecurity framework combining multi-level traffic feature extraction (L1 Packet, L2 Flow, L3 Session &amp; Edge/IoT), a 10-model Deep Learning &amp; Machine Learning ensemble, exact TreeSHAP explainability, and an automated Zero-Trust continuous verification &amp; response engine.
+        </p>
+
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded text-center" style="background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="fs-2 fw-bold text-info">{{ stats.total_alerts | format_number }}</div>
+                    <div class="small text-muted text-uppercase">Alerts Analyzed</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded text-center" style="background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="fs-2 fw-bold text-success">{{ stats.accuracy }}%</div>
+                    <div class="small text-muted text-uppercase">Ensemble Accuracy</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded text-center" style="background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="fs-2 fw-bold text-warning">{{ stats.ai_models }}</div>
+                    <div class="small text-muted text-uppercase">DL &amp; ML Models</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded text-center" style="background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="fs-2 fw-bold text-primary">24</div>
+                    <div class="small text-muted text-uppercase">L1-L3 Traffic Features</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Team & Project Supervision -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-5">
+            <div class="glass-card h-100">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="bi bi-mortarboard-fill text-info me-2"></i>Project Supervision / Guide</h3>
+                </div>
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="p-4 rounded" style="background: rgba(56,189,248,0.08); border-left: 4px solid #38bdf8;">
+                        <div class="text-uppercase small text-info fw-bold mb-1">Project Supervisor</div>
+                        <h3 class="fw-bold mb-1">Ms. S. Saranya, <span class="fs-5 text-info">M.Tech</span></h3>
+                        <div class="text-light mb-1">Assistant Professor</div>
+                        <div class="text-muted small">Department of CSE - AIML</div>
+                        <div class="text-muted small mt-1">Aditya College of Engineering and Technology</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="glass-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="bi bi-people-fill text-primary me-2"></i>Project Team Members</h3>
+                    <span class="badge bg-secondary">CSE - AIML</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <div class="small text-info fw-semibold">Team Member 1</div>
+                                <div class="fs-5 fw-bold mt-1">P. Dwaraka Ushashwini</div>
+                                <code class="text-warning">23MH1A42J4</code>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <div class="small text-info fw-semibold">Team Member 2</div>
+                                <div class="fs-5 fw-bold mt-1">G. Ramya</div>
+                                <code class="text-warning">23MH1A42E4</code>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <div class="small text-info fw-semibold">Team Member 3</div>
+                                <div class="fs-5 fw-bold mt-1">K. Kavya</div>
+                                <code class="text-warning">23MH1A42F3</code>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <div class="small text-info fw-semibold">Team Member 4</div>
+                                <div class="fs-5 fw-bold mt-1">M. T. Ravi Kishore</div>
+                                <code class="text-warning">23MH1A42G6</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 Architecture Stages -->
+    <div class="glass-card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-diagram-3-fill text-success me-2"></i>5-Stage Zero-Trust Explainable Architecture</h3>
+            <a href="{{ url_for('ai_models.zero_trust_lab') }}" class="btn btn-sm btn-info text-dark fw-semibold">
+                <i class="bi bi-play-fill me-1"></i>Open Live Interactive Lab
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.02); border-left: 3px solid #38bdf8;">
+                        <div class="small text-info fw-bold">STAGE 1</div>
+                        <h5 class="mt-1">Multi-Level Traffic Input</h5>
+                        <p class="small text-muted mb-0">Captures 24 network attributes across L1 Packet headers/entropy, L2 Flow throughput/IAT, and L3 Session, Identity &amp; Edge/IoT drift.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.02); border-left: 3px solid #818cf8;">
+                        <div class="small text-primary fw-bold">STAGE 2</div>
+                        <h5 class="mt-1">Leak-Free Preprocessing</h5>
+                        <p class="small text-muted mb-0">Applies stratified train-only median imputation and StandardScaler normalization to eliminate feature skew and data leakage.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.02); border-left: 3px solid #a855f7;">
+                        <div class="small text-warning fw-bold">STAGE 3</div>
+                        <h5 class="mt-1">10-Model DL &amp; ML Classification</h5>
+                        <p class="small text-muted mb-0">Fuses 6 PyTorch Deep Learning networks (1D-CNN, Bi-LSTM, Transformer, GNN, ResMLP, Autoencoder) with 4 ensemble ML classifiers.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.02); border-left: 3px solid #f59e0b;">
+                        <div class="small text-warning fw-bold">STAGE 4</div>
+                        <h5 class="mt-1">SHAP Explainability Layer</h5>
+                        <p class="small text-muted mb-0">Eliminates "black-box" uncertainty using TreeSHAP feature attributions, L1/L2/L3 multi-level contribution breakdown, and analyst narratives.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded h-100" style="background: rgba(255,255,255,0.02); border-left: 3px solid #10b981;">
+                        <div class="small text-success fw-bold">STAGE 5</div>
+                        <h5 class="mt-1">Zero-Trust Decision Engine</h5>
+                        <p class="small text-muted mb-0">Computes continuous Entity Trust Scores (0–100), maps threats to MITRE ATT&amp;CK, and enforces automated micro-segmentation &amp; session revocation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
