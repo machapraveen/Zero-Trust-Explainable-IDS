@@ -159,9 +159,9 @@ def resolve(alert_id):
         db.session.commit()
         
         flash(f'Alert #{alert.id} resolved.', 'success')
-        return redirect(url_for('alerts.alert_list'))
+        return redirect(request.referrer or url_for('alerts.alert_list'))
     
-    return render_template('resolve_alert.html', alert=alert)
+    return redirect(url_for('alerts.alert_detail', alert_id=alert.id))
 
 
 @alerts_bp.route('/<int:alert_id>/add-note', methods=['POST'])

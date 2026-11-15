@@ -997,8 +997,12 @@ function openLegalDoc(docType) {
     
     document.getElementById('legalDocTitle').innerHTML = 
         '<i class="bi ' + doc.icon + ' me-2"></i>' + doc.title;
-    document.getElementById('legalDocContent').innerHTML = doc.content;
-    document.getElementById('downloadDocBtn').href = '/static/docs/' + doc.file;
+    const contentEl = document.getElementById('legalDocContent');
+    contentEl.innerHTML = doc.content;
+    const downloadBtn = document.getElementById('downloadDocBtn');
+    const blob = new Blob([contentEl.innerText.trim() + '\n'], { type: 'text/plain;charset=utf-8' });
+    downloadBtn.href = URL.createObjectURL(blob);
+    downloadBtn.download = doc.file || (docType + '.txt');
     
     const modal = new bootstrap.Modal(document.getElementById('legalDocModal'));
     modal.show();

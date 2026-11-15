@@ -23,17 +23,24 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== Sidebar =====
 function initializeSidebar() {
     const sidebar = document.querySelector('.sidebar');
-    const toggleBtn = document.querySelector('.sidebar-toggle');
+    const mainContent = document.querySelector('.main-content');
+    const toggleBtn = document.getElementById('sidebar-toggle') || document.querySelector('.sidebar-toggle');
     
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
+    if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (window.innerWidth < 992) {
+                sidebar.classList.toggle('open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                if (mainContent) mainContent.classList.toggle('expanded');
+            }
         });
     }
     
     // Close sidebar on outside click (mobile)
     document.addEventListener('click', function(e) {
-        if (window.innerWidth < 992) {
+        if (window.innerWidth < 992 && sidebar) {
             if (!sidebar.contains(e.target) && !toggleBtn?.contains(e.target)) {
                 sidebar.classList.remove('open');
             }
@@ -69,7 +76,7 @@ function initializeAutoRefresh() {
 }
 
 function startAutoRefresh() {
-    NIDS.refreshTimer = setInterval(refreshDashboard, NIDS.refreshInterval);
+    NIDS.refreshTimer = setInterval(pollGlobalStats, NIDS.refreshInterval);
 }
 
 function stopAutoRefresh() {
@@ -78,24 +85,14 @@ function stopAutoRefresh() {
     }
 }
 
-function refreshDashboard() {
-    // Refresh stats
+function pollGlobalStats() {
+    // Refresh global stats quietly
     fetch('/api/v1/status')
         .then(r => r.json())
         .then(data => {
             updateStats(data);
         })
-        .catch(console.error);
-    
-    // Refresh charts if on dashboard
-    if (typeof updateCharts === 'function') {
-        updateCharts();
-    }
-    
-    // Refresh alerts if on alerts page
-    if (typeof refreshAlerts === 'function') {
-        refreshAlerts();
-    }
+        .catch(() => {});
 }
 
 function updateStats(data) {

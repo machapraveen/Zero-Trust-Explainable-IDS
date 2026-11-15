@@ -23,6 +23,8 @@ class Config:
     
     # Flask
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'ztxai-ids-super-secret-key-change-in-production'
+    TEMPLATES_AUTO_RELOAD = True
+    SEND_FILE_MAX_AGE_DEFAULT = 0
     
     # Database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or f'sqlite:///{BASE_DIR / "data" / "ztxai_ids.db"}'

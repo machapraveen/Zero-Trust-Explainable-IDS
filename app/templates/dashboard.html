@@ -25,7 +25,7 @@
                 <span class="pulse-dot"></span>
                 <span class="status-text">LIVE MONITORING</span>
             </span>
-            <button class="btn cyber-btn-refresh" onclick="refreshDashboard()">
+            <button class="btn cyber-btn-refresh" onclick="refreshDashboard(true)">
                 <i class="bi bi-arrow-clockwise"></i>
                 <span>SYNC</span>
             </button>
@@ -99,7 +99,7 @@
     
     <!-- Main Content Grid -->
     <div class="dashboard-grid">
-        <!-- Traffic Chart -->
+        <!-- Row 1 (8 cols): Traffic Chart -->
         <div class="dashboard-card large cyber-panel">
             <div class="panel-border"></div>
             <div class="card-header">
@@ -116,16 +116,18 @@
                 </div>
             </div>
             <div class="card-body">
-                <canvas id="trafficChart" height="100"></canvas>
+                <div class="chart-container" style="height: 295px;">
+                    <canvas id="trafficChart"></canvas>
+                </div>
             </div>
             <div class="panel-status">
                 <span class="status-indicator online"></span>
-                <span>DATA STREAM ACTIVE</span>
+                <span>DATA STREAM ACTIVE &bull; MULTI-LEVEL L1/L2/L3 TELEMETRY</span>
             </div>
         </div>
         
-        <!-- Recent Alerts -->
-        <div class="dashboard-card cyber-panel">
+        <!-- Row 1 (4 cols): Recent Alerts / Threat Feed -->
+        <div class="dashboard-card feed-panel cyber-panel">
             <div class="panel-border"></div>
             <div class="card-header">
                 <h3>
@@ -137,7 +139,7 @@
             <div class="card-body">
                 <div class="alerts-list cyber-alerts" id="recent-alerts">
                     {% for alert in recent_alerts %}
-                    <div class="alert-item cyber-alert {{ alert.severity }}">
+                    <a href="{{ url_for('alerts.alert_detail', alert_id=alert.id) }}" class="alert-item cyber-alert {{ alert.severity }}">
                         <div class="alert-severity-bar"></div>
                         <div class="alert-icon">
                             {{ alert.severity_icon }}
@@ -151,7 +153,7 @@
                             </div>
                         </div>
                         <span class="cyber-badge {{ alert.severity }}">{{ alert.severity | upper }}</span>
-                    </div>
+                    </a>
                     {% else %}
                     <div class="empty-state cyber-empty">
                         <div class="shield-icon">
@@ -166,7 +168,7 @@
             </div>
         </div>
         
-        <!-- Attack Distribution -->
+        <!-- Row 2 (6 cols): Attack Distribution -->
         <div class="dashboard-card cyber-panel">
             <div class="panel-border"></div>
             <div class="card-header">
@@ -176,11 +178,29 @@
                 </h3>
             </div>
             <div class="card-body">
-                <canvas id="attackChart" height="200"></canvas>
+                <div class="chart-container" style="height: 270px;">
+                    <canvas id="attackChart"></canvas>
+                </div>
             </div>
         </div>
         
-        <!-- Top Source IPs -->
+        <!-- Row 2 (6 cols): Severity Breakdown -->
+        <div class="dashboard-card cyber-panel">
+            <div class="panel-border"></div>
+            <div class="card-header">
+                <h3>
+                    <span class="header-icon"><i class="bi bi-bar-chart"></i></span>
+                    Severity Matrix
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container" style="height: 270px;">
+                    <canvas id="severityChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Row 3 (6 cols): Top Source IPs -->
         <div class="dashboard-card cyber-panel">
             <div class="panel-border"></div>
             <div class="card-header">
@@ -216,21 +236,7 @@
             </div>
         </div>
         
-        <!-- Severity Breakdown -->
-        <div class="dashboard-card cyber-panel">
-            <div class="panel-border"></div>
-            <div class="card-header">
-                <h3>
-                    <span class="header-icon"><i class="bi bi-bar-chart"></i></span>
-                    Severity Matrix
-                </h3>
-            </div>
-            <div class="card-body">
-                <canvas id="severityChart" height="200"></canvas>
-            </div>
-        </div>
-        
-        <!-- System Status -->
+        <!-- Row 3 (6 cols): System Status -->
         <div class="dashboard-card cyber-panel system-panel">
             <div class="panel-border"></div>
             <div class="card-header">
@@ -243,28 +249,28 @@
                 <div class="status-list cyber-status">
                     <div class="status-item">
                         <span class="status-indicator online"></span>
-                        <span class="status-label">ML Engine</span>
+                        <span class="status-label">10-Model DL/ML Ensemble</span>
                         <span class="status-badge online">NEURAL ACTIVE</span>
                     </div>
                     <div class="status-item">
                         <span class="status-indicator online"></span>
-                        <span class="status-label">Detection Core</span>
-                        <span class="status-badge online">SCANNING</span>
+                        <span class="status-label">TreeSHAP Explainability Layer</span>
+                        <span class="status-badge online">INTERPRETING</span>
                     </div>
                     <div class="status-item">
                         <span class="status-indicator online"></span>
-                        <span class="status-label">Database</span>
+                        <span class="status-label">Zero-Trust Policy Engine</span>
+                        <span class="status-badge online">ENFORCING</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-indicator online"></span>
+                        <span class="status-label">Multi-Level Traffic Analytics</span>
+                        <span class="status-badge online">L1/L2/L3 LIVE</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-indicator online"></span>
+                        <span class="status-label">SOC Telemetry Database</span>
                         <span class="status-badge online">SYNCED</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-indicator online"></span>
-                        <span class="status-label">Federation Hub</span>
-                        <span class="status-badge online">CONNECTED</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-indicator online"></span>
-                        <span class="status-label">Threat Intel</span>
-                        <span class="status-badge online">UPDATED</span>
                     </div>
                 </div>
             </div>
@@ -548,25 +554,23 @@
 }
 
 .panel-status {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(0, 242, 254, 0.1);
+    margin-top: auto;
+    padding: 0.55rem 1.35rem;
+    background: rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(0, 242, 254, 0.12);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.65rem;
-    color: #666;
+    font-size: 0.68rem;
+    color: #8892a6;
     letter-spacing: 1px;
 }
 
 .status-indicator {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .status-indicator.online {
@@ -580,20 +584,62 @@
     50% { opacity: 0.5; }
 }
 
+.cyber-alerts {
+    max-height: 315px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
 .cyber-alert {
     position: relative;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
-    padding: 0.75rem;
-    padding-left: 0.5rem;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 8px;
+    margin-bottom: 0.6rem;
+    padding: 0.7rem 0.85rem 0.7rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s ease;
+}
+
+.cyber-alert:last-child {
+    margin-bottom: 0;
 }
 
 .cyber-alert:hover {
-    border-color: rgba(0, 242, 254, 0.2);
-    background: rgba(0, 242, 254, 0.05);
+    border-color: rgba(0, 242, 254, 0.35);
+    background: rgba(0, 242, 254, 0.06);
+    transform: translateX(3px);
+    color: inherit;
+}
+
+.cyber-alert .alert-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.cyber-alert .alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.cyber-alert .alert-title {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #f8fafc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cyber-alert .alert-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
 }
 
 .alert-severity-bar {
@@ -770,21 +816,18 @@
 }
 
 .system-uptime {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 210, 106, 0.05);
-    border-top: 1px solid rgba(0, 210, 106, 0.1);
+    margin-top: auto;
+    padding: 0.6rem 1.35rem;
+    background: rgba(0, 210, 106, 0.06);
+    border-top: 1px solid rgba(0, 210, 106, 0.14);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .uptime-label {
-    font-size: 0.65rem;
-    color: #666;
+    font-size: 0.68rem;
+    color: #8892a6;
     letter-spacing: 1px;
 }
 
@@ -793,15 +836,10 @@
     font-size: 0.85rem;
     color: #00d26a;
 }
-
-.system-panel {
-    padding-bottom: 2.5rem;
-}
 </style>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
 <script>
     // Initialize dashboard
     let trafficChart, attackChart, severityChart;
@@ -892,17 +930,19 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom',
+                        position: 'right',
                         labels: { 
-                            color: '#a0a0a0', 
-                            padding: 15,
-                            font: { family: 'Orbitron', size: 9 }
+                            color: '#cbd5e1', 
+                            padding: 12,
+                            usePointStyle: true,
+                            font: { family: 'Orbitron', size: 10 }
                         }
                     }
                 },
-                cutout: '65%'
+                cutout: '64%'
             }
         });
     }
@@ -921,20 +961,22 @@
                 datasets: [{
                     data: severityData.values || [0, 0, 0, 0, 0],
                     backgroundColor: ['#ff4757', '#ff9f43', '#ffc107', '#00d26a', '#00f2fe'],
-                    borderRadius: 4
+                    borderRadius: 6,
+                    maxBarThickness: 48
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
                     x: { 
                         grid: { display: false }, 
-                        ticks: { color: '#666', font: { family: 'Orbitron', size: 8 } } 
+                        ticks: { color: '#94a3b8', font: { family: 'Orbitron', size: 9 } } 
                     },
                     y: { 
-                        grid: { color: 'rgba(0, 242, 254, 0.05)' }, 
-                        ticks: { color: '#666', font: { family: 'Orbitron', size: 9 } },
+                        grid: { color: 'rgba(0, 242, 254, 0.06)' }, 
+                        ticks: { color: '#94a3b8', font: { family: 'Orbitron', size: 9 } },
                         beginAtZero: true
                     }
                 }
@@ -943,9 +985,9 @@
     }
     
     // Refresh Dashboard - SYNC BUTTON
-    function refreshDashboard() {
+    function refreshDashboard(isManual = false) {
         const syncBtn = document.querySelector('.cyber-btn-refresh');
-        if (syncBtn) {
+        if (syncBtn && isManual) {
             syncBtn.classList.add('syncing');
             syncBtn.innerHTML = '<i class="bi bi-arrow-repeat spinning"></i><span>SYNCING...</span>';
         }
@@ -977,16 +1019,17 @@
                         severityChart.update();
                     }
                     
-                    // Show success feedback
-                    showToast('Dashboard synchronized', 'success');
+                    if (isManual) {
+                        showToast('Dashboard synchronized', 'success');
+                    }
                 }
             })
             .catch(err => {
                 console.error('Sync error:', err);
-                showToast('Sync failed', 'error');
+                if (isManual) showToast('Sync failed', 'error');
             })
             .finally(() => {
-                if (syncBtn) {
+                if (syncBtn && isManual) {
                     syncBtn.classList.remove('syncing');
                     syncBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i><span>SYNC</span>';
                 }

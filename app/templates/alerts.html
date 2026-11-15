@@ -82,6 +82,7 @@
     <div class="bulk-actions" id="bulk-actions" style="display: none;">
         <span id="selected-count">0</span> selected
         <form method="POST" action="{{ url_for('alerts.bulk_action') }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" id="bulk-action-type">
             <div id="selected-ids"></div>
             <button type="submit" name="action" value="acknowledge" class="btn btn-sm btn-outline-success" onclick="document.getElementById('bulk-action-type').value='acknowledge'">
@@ -168,15 +169,19 @@
                             </a>
                             {% if not alert.acknowledged %}
                             <form method="POST" action="{{ url_for('alerts.acknowledge', alert_id=alert.id) }}" class="d-inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <button type="submit" class="btn btn-sm btn-outline-success" title="Acknowledge">
                                     <i class="bi bi-check"></i>
                                 </button>
                             </form>
                             {% endif %}
                             {% if not alert.resolved %}
-                            <a href="{{ url_for('alerts.resolve', alert_id=alert.id) }}" class="btn btn-sm btn-outline-primary" title="Resolve">
-                                <i class="bi bi-check-all"></i>
-                            </a>
+                            <form method="POST" action="{{ url_for('alerts.resolve', alert_id=alert.id) }}" class="d-inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-sm btn-outline-primary" title="Resolve">
+                                    <i class="bi bi-check-all"></i>
+                                </button>
+                            </form>
                             {% endif %}
                         </div>
                     </td>

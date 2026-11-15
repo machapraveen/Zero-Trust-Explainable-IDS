@@ -75,7 +75,9 @@
                 <h3><i class="bi bi-graph-up me-2"></i>Weekly Alert Trend</h3>
             </div>
             <div class="card-body">
-                <canvas id="weeklyTrendChart" height="300"></canvas>
+                <div class="chart-container">
+                    <canvas id="weeklyTrendChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -87,7 +89,9 @@
                 <h3><i class="bi bi-pie-chart me-2"></i>Attack Types</h3>
             </div>
             <div class="card-body">
-                <canvas id="attackTypeChart" height="300"></canvas>
+                <div class="chart-container">
+                    <canvas id="attackTypeChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -302,7 +306,6 @@
 }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // Weekly Trend Chart
 const weeklyData = {{ weekly_data | tojson }};

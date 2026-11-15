@@ -2,17 +2,16 @@
 // ZT-XAIIDS Service Worker - Enhanced PWA Support
 // =====================================================
 
-const CACHE_NAME = 'ztxai-ids-v2.0.0';
+const CACHE_NAME = 'ztxai-ids-v3.1.0';
 const OFFLINE_URL = '/offline';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
-  '/',
-  '/dashboard',
-  '/static/css/style.css',
-  '/static/js/dashboard.js',
-  '/static/js/fuse-search.js',
+  '/static/css/style.css?v=3.1',
+  '/static/js/dashboard.js?v=3.1',
+  '/static/js/fuse-search.js?v=3.1',
   '/static/manifest.json',
+  '/static/favicon.ico',
   '/static/images/icons/icon-192x192.png',
   '/static/images/icons/icon-512x512.png',
   '/static/images/social-preview.png',
@@ -20,8 +19,7 @@ const STATIC_ASSETS = [
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
-  'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.esm.min.js',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap'
+  'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js'
 ];
 
 // Dynamic content patterns to cache
@@ -34,7 +32,7 @@ const DYNAMIC_CACHE_PATTERNS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker v2.0.0');
+  console.log('[SW] Installing service worker v3.1.0');
   
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -94,26 +92,25 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // Handle API requests differently (network-first)
-  if (url.pathname.startsWith('/api/')) {
+  // Handle API requests, CSS/JS, and HTML navigations with network-first so UI updates are always immediate
+  if (
+    url.pathname.startsWith('/api/') ||
+    request.mode === 'navigate' ||
+    url.pathname.endsWith('.css') ||
+    url.pathname.endsWith('.js')
+  ) {
     event.respondWith(networkFirst(request));
     return;
   }
   
-  // Handle static assets (cache-first)
+  // Handle immutable image/font static assets (cache-first)
   if (isStaticAsset(url.pathname)) {
     event.respondWith(cacheFirst(request));
     return;
   }
   
-  // Handle page navigations (stale-while-revalidate)
-  if (request.mode === 'navigate') {
-    event.respondWith(staleWhileRevalidate(request));
-    return;
-  }
-  
-  // Default: stale-while-revalidate
-  event.respondWith(staleWhileRevalidate(request));
+  // Default: network-first
+  event.respondWith(networkFirst(request));
 });
 
 // Cache-first strategy
